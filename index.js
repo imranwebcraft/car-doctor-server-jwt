@@ -10,7 +10,10 @@ const port = process.env.PORT || 5000;
 // middleware
 app.use(
 	cors({
-		origin: ["http://localhost:5173"],
+		origin: [
+			"https://cars-doctor-f8543.web.app",
+			"https://cars-doctor-f8543.firebaseapp.com",
+		],
 		credentials: true,
 	})
 );
@@ -74,7 +77,8 @@ async function run() {
 			res
 				.cookie("token", token, {
 					httpOnly: true,
-					secure: true,
+					secure: process.env.NODE_ENV === "production",
+					sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
 				})
 				.send({ success: true });
 		});
